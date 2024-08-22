@@ -1,9 +1,8 @@
+from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
-from django.contrib.auth import get_user_model
-
-from notes.models import Note
 from notes.forms import NoteForm
+from notes.models import Note
 
 User = get_user_model()
 
@@ -35,19 +34,21 @@ class TestContent(TestCase):
     def setUp(self):
         self.client.force_login(self.author)
 
-    """Проверка, что отдельная заметка передаётся
-    на страницу со списком заметок в списке object_list в словаре context"""
-
     def test_note_redirect_object_list_in_context(self):
+        """
+        Проверяет, что заметка автора отображается на странице
+        со списком заметок и содержится в context под ключом 'object_list'.
+        """
         url = reverse("notes:list")
         response = self.client.get(url)
         self.assertIn("object_list", response.context)
         self.assertIn(self.notes, response.context["object_list"])
 
-    """Проверка, что в список заметок одного пользователя
-    не попадают заметки другого пользователя"""
-
     def test_only_users_notes(self):
+        """
+        Проверяет, что в списке заметок отображаются только заметки
+        текущего залогиненного пользователя, а не других пользователей.
+        """
         self.client.logout()
         self.client.force_login(self.reader)
         url = reverse("notes:list")
@@ -55,10 +56,11 @@ class TestContent(TestCase):
         self.assertIn(self.other_notes, response.context["object_list"])
         self.assertNotIn(self.notes, response.context["object_list"])
 
-    """Проверка, что на страницы создания и редактирования
-    заметки передаются формы."""
-
     def test_client_has_form(self):
+        """
+        Проверяет, что страницы создания и редактирования заметок
+        содержат в context форму для ввода данных.
+        """
         urls_with_forms = [
             ("notes:add", None),
             ("notes:edit", (self.notes.slug,)),

@@ -1,8 +1,9 @@
-from django.test import TestCase
 from http import HTTPStatus
+
+from django.contrib.auth import get_user_model
+from django.test import TestCase
 from django.urls import reverse
 from notes.models import Note
-from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
@@ -37,9 +38,9 @@ class TestRoutes(TestCase):
 
     def test_pages_availability(self):
         urls = (
-            ("notes:list"),
-            ("notes:success"),
-            ("notes:add"),
+            "notes:list",
+            "notes:success",
+            "notes:add",
         )
         for name in urls:
             with self.subTest(name=name):
@@ -101,9 +102,9 @@ class TestRoutes(TestCase):
 
     def test_pages_availability_for_all_users(self):
         urls = (
-            ("users:login"),
-            ("users:logout"),
-            ("users:signup"),
+            "users:login",
+            "users:logout",
+            "users:signup",
         )
         for name in urls:
             with self.subTest(name=name):

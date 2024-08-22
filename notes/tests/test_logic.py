@@ -1,9 +1,10 @@
 from http import HTTPStatus
-from pytils.translit import slugify
+
 from django.contrib.auth import get_user_model
 from django.test import Client, TestCase
 from django.urls import reverse
 from notes.models import Note
+from pytils.translit import slugify
 
 User = get_user_model()
 
@@ -94,7 +95,6 @@ class TestNoteEditDelete(TestCase):
 
     def setUp(self):
         self.author_client = self.client
-        self.author_client = Client()
         self.author_client.force_login(self.author)
         self.reader_client = Client()
         self.reader_client.force_login(self.reader)
